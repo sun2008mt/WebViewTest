@@ -1,19 +1,15 @@
 package com.geonoon.webviewversiontest;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -98,124 +94,11 @@ public class WebviewActivity extends AppCompatActivity {
 
         //设置WebViewClient类
         //WebViewClient是处理各种通知和请求事件的
-        mWebView.setWebViewClient(new WebViewClient() {
-//            打开网页不调用系统浏览器，在定义的WebView中显示
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                progressDialog.show();
-
-
-//                view.loadUrl(url);
-                Log.e("WebView", "SDK版本在24以前: " + url);
-                return false;
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                progressDialog.show();
-
-//                view.loadUrl(request.getMethod().toString());
-                Log.e("WebView", "SDK版本在24以后: " + request.getUrl().toString());
-                return false;
-            }
-
-            //设置加载前的函数
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Log.e("WebView","开始加载...");
-            }
-
-            //设置结束加载函数
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                progressDialog.dismiss();
-
-                Log.e("WebView","结束加载...");
-            }
-
-            //加载页面资源时
-            @Override
-            public void onLoadResource(WebView view, String url) {
-                super.onLoadResource(view, url);
-
-                Log.e("WebView","加载资源: " + url);
-            }
-
-//            //App里面使用webview控件的时候遇到了诸如404这类的错误的时候，若也显示浏览器里面的那种错误提示页面就显得很丑陋了，那么这个时候我们的app就需要加载一个本地的错误提示页面
-//            @Override
-//            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-//                super.onReceivedError(view, request, error);
-//
-////                //步骤1：写一个html文件（error_handle.html），用于出错时展示给用户看的提示页面
-////                //步骤2：将该html文件放置到代码根目录的assets文件夹下
-////                //步骤3：复写WebViewClient的onRecievedError方法
-////
-////                switch (errorCode) {
-////                    //自定义不同的错误类型
-////                    case 0:
-////                        view.loadUrl("file:///android_assets/html/error_handle.html");
-////                        break;
-////                }
-//            }
-
-            //处理https请求
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();       //表示等待证书响应
-//                handler.cancel();        //表示挂起连接，为默认方式
-//                handler.handleMessage(null);     //其他处理
-            }
-        });
+        mWebView.setWebViewClient(new MyWebViewClient(progressDialog));
 
         //设置WebChromeClient类
         //辅助WebView处理JS的对话框，网站图标和网站标题等
-        mWebView.setWebChromeClient(new WebChromeClient() {
-
-            //获取网站标题
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                Log.e("WebView", title);
-            }
-
-            //获取加载进度
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                String progress = newProgress + "%";
-//                progressDialog.setProgress(newProgress);
-                progressDialog.setMessage("已加载" + progress + "，请稍后...");
-                Log.e("WebView", progress);
-            }
-
-            //JS弹出框
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                new AlertDialog.Builder(WebviewActivity.this)
-                        .setTitle("JsAlert")
-                        .setMessage(message)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                result.confirm();
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
-                return true;
-            }
-
-//            //JS确认框
-//            @Override
-//            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
-//                return super.onJsConfirm(view, url, message, result);
-//            }
-//
-//            //JS输入框
-//            @Override
-//            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-//                return super.onJsPrompt(view, url, message, defaultValue, result);
-//            }
-        });
+        mWebView.setWebChromeClient(new MyWebChromeClient(this, mWebViewContainer, progressDialog));
     }
 
     //初始化WebView设置
@@ -227,6 +110,7 @@ public class WebviewActivity extends AppCompatActivity {
         // 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        mWebSettings.setSupportMultipleWindows(true);         //支持多窗口
 
         mWebSettings.setAllowFileAccess(true); //设置可以访问文件
         mWebSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
@@ -294,6 +178,7 @@ public class WebviewActivity extends AppCompatActivity {
             ((ViewGroup) mWebView.getParent()).removeView(mWebView);
             mWebView.destroy();
             mWebView = null;
+            mWebViewContainer = null;
         }
     }
 }
