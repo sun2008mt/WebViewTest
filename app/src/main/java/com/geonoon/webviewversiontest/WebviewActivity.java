@@ -105,9 +105,9 @@ public class WebviewActivity extends AppCompatActivity {
                 progressDialog.show();
 
 
-                view.loadUrl(url);
+//                view.loadUrl(url);
                 Log.e("WebView", "SDK版本在24以前: " + url);
-                return true;
+                return false;
             }
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -115,9 +115,9 @@ public class WebviewActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 progressDialog.show();
 
-                view.loadUrl(request.getMethod().toString());
+//                view.loadUrl(request.getMethod().toString());
                 Log.e("WebView", "SDK版本在24以后: " + request.getUrl().toString());
-                return true;
+                return false;
             }
 
             //设置加载前的函数
