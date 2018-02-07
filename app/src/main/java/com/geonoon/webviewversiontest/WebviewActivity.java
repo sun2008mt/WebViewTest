@@ -14,8 +14,8 @@ public class WebviewActivity extends AppCompatActivity {
     //传入的资源url
 //    private String resourceUrl = "http://geonoon.com/mobile/";
 //    private String resourceUrl = "file:///android_asset/test.html";
-//    private String resourceUrl = "http://www.geonoon.com:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
-    private String resourceUrl = "http://192.168.1.116:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
+    private String resourceUrl = "http://www.geonoon.com:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
+//    private String resourceUrl = "http://192.168.1.116:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
 //    private String resourceUrl = "http://192.168.1.116:9111/test.html";
 
     //WebView
@@ -171,6 +171,7 @@ public class WebviewActivity extends AppCompatActivity {
             ((ViewGroup) mWebView.getParent()).removeView(mWebView);
             mWebView.destroy();
             mWebView = null;
+            mWebViewContainer.removeAllViews();
             mWebViewContainer = null;
         }
     }
