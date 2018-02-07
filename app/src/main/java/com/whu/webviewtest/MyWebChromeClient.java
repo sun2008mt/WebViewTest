@@ -1,4 +1,4 @@
-package com.geonoon.webviewversiontest;
+package com.whu.webviewtest;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 /**
  * Created by marc on 2/6/18.

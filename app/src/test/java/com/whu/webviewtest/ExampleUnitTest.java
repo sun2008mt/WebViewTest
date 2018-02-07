@@ -1,4 +1,4 @@
-package com.geonoon.webviewversiontest;
+package com.whu.webviewtest;
 
 import org.junit.Test;
 

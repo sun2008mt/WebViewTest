@@ -1,4 +1,4 @@
-package com.geonoon.webviewversiontest;
+package com.whu.webviewtest;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

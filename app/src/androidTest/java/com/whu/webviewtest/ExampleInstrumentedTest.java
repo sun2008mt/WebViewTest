@@ -1,4 +1,4 @@
-package com.geonoon.webviewversiontest;
+package com.whu.webviewtest;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.geonoon.webviewversiontest", appContext.getPackageName());
+        assertEquals("com.whu.webviewtest", appContext.getPackageName());
     }
 }

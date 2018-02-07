@@ -1,4 +1,4 @@
-package com.geonoon.webviewversiontest;
+package com.whu.webviewtest;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -49,7 +49,7 @@ public class MyWebViewClient extends WebViewClient {
         for (int i = 0; i < childCount; i++) {
             Log.e("WebView", "url地址: " + ((WebView) container.getChildAt(i)).getUrl());
         }
-        Log.e("WebView",  "容器中的WebView数量为： " + childCount);
+        Log.e("WebView", "容器中的WebView数量为： " + childCount);
         Log.e("*************", "*************");
 
         return super.shouldOverrideUrlLoading(view, request);
@@ -81,21 +81,54 @@ public class MyWebViewClient extends WebViewClient {
         Log.e("WebView", "加载资源: " + url);
     }
 
+    @Override
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+        Log.e("WebView", description);
+
+        switch (errorCode) {
+            //自定义不同的错误类型
+
+            //连接错误
+            case WebViewClient.ERROR_CONNECT:
+                view.loadUrl("file:///android_asset/html/error_handle.html");
+                break;
+
+            //连接超时
+            case WebViewClient.ERROR_TIMEOUT:
+                break;
+
+            default:
+                break;
+        }
+    }
+
     //App里面使用webview控件的时候遇到了诸如404这类的错误的时候，若也显示浏览器里面的那种错误提示页面就显得很丑陋了，那么这个时候我们的app就需要加载一个本地的错误提示页面
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        super.onReceivedError(view, request, error);
+        //步骤1：写一个html文件（error_handle.html），用于出错时展示给用户看的提示页面
+        //步骤2：将该html文件放置到代码根目录的assets文件夹下
+        //步骤3：复写WebViewClient的onRecievedError方法
 
-//                //步骤1：写一个html文件（error_handle.html），用于出错时展示给用户看的提示页面
-//                //步骤2：将该html文件放置到代码根目录的assets文件夹下
-//                //步骤3：复写WebViewClient的onRecievedError方法
-//
-//                switch (errorCode) {
-//                    //自定义不同的错误类型
-//                    case 0:
-//                        view.loadUrl("file:///android_assets/html/error_handle.html");
-//                        break;
-//                }
+        Log.e("WebView", error.getDescription().toString());
+
+
+        switch (error.getErrorCode()) {
+            //自定义不同的错误类型
+
+            //连接错误
+            case WebViewClient.ERROR_CONNECT:
+                view.loadUrl("file:///android_asset/html/error_handle.html");
+                break;
+
+            //连接超时
+            case WebViewClient.ERROR_TIMEOUT:
+                break;
+
+            default:
+                break;
+        }
     }
 
     //处理https请求
