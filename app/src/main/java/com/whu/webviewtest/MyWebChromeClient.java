@@ -47,7 +47,7 @@ public class MyWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-        Log.e("WebView", "新窗口被创建...");
+        Log.e("WebView", "新窗口被创建...\n是否为对话框：" + isDialog + "\n是否是用户触发：" + isUserGesture);
 
         WebView childView = new WebView(context);
         initWebViewSettings(childView);
