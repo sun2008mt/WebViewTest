@@ -1,19 +1,12 @@
 package com.geonoon.webviewversiontest;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 public class WebviewActivity extends AppCompatActivity {
@@ -22,8 +15,8 @@ public class WebviewActivity extends AppCompatActivity {
 //    private String resourceUrl = "http://geonoon.com/mobile/";
 //    private String resourceUrl = "file:///android_asset/test.html";
 //    private String resourceUrl = "http://www.geonoon.com:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
-//    private String resourceUrl = "http://192.168.1.116:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
-    private String resourceUrl = "http://192.168.1.116:9111/test.html";
+    private String resourceUrl = "http://192.168.1.116:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
+//    private String resourceUrl = "http://192.168.1.116:9111/test.html";
 
     //WebView
     private FrameLayout mWebViewContainer;
