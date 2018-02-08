@@ -3,10 +3,13 @@ package com.whu.webviewtest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -45,11 +48,20 @@ public class MyWebChromeClient extends WebChromeClient {
         Log.e("WebView", progress);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
         Log.e("WebView", "新窗口被创建...\n是否为对话框：" + isDialog + "\n是否是用户触发：" + isUserGesture);
 
+//        return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
+
         WebView childView = new WebView(context);
+
+        //允许Cookie和第三方Cookie认证
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setAcceptThirdPartyCookies(childView, true);
+
         initWebViewSettings(childView);
         childView.setWebChromeClient(this);
         childView.setWebViewClient(new MyWebViewClient(progressDialog));
@@ -61,8 +73,10 @@ public class MyWebChromeClient extends WebChromeClient {
         return true;
     }
 
+
     @Override
     public void onCloseWindow(WebView window) {
+//        super.onCloseWindow(window);
 
         int childCount = container.getChildCount();
 
@@ -70,21 +84,23 @@ public class MyWebChromeClient extends WebChromeClient {
         for (int i = 0; i < childCount; i++) {
             Log.e("WebView", ((WebView) container.getChildAt(i)).getUrl());
         }
-        Log.e("WebView",  "容器中的WebView数量为： " + childCount);
+        Log.e("WebView", "容器中的WebView数量为： " + childCount);
         Log.e("*************", "*************");
 
         //如果WebView数量大于1，则关闭子WebView时移除控件
-        if (childCount > 1) {
-            container.removeViewAt(childCount - 1);
+        if (window != null && childCount > 1) {
+            container.removeView(window);
+//            container.removeViewAt(childCount - 1);
+            window.destroy();
         }
 
         Log.e("WebView", "窗口被关闭...");
-        Log.e("WebView",  "关闭后容器中的WebView数量为： " + container.getChildCount());
+        Log.e("WebView", "关闭后容器中的WebView数量为： " + container.getChildCount());
 
         //如果其他打开的WebView被关闭，表明登录成功，刷新第一个页面
-        if (container.getChildCount() == 1) {
-            ((WebView) container.getChildAt(0)).reload();
-        }
+//        if (container.getChildCount() == 1) {
+//            ((WebView) container.getChildAt(0)).reload();
+//        }
     }
 
     //JS弹出框

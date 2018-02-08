@@ -124,9 +124,11 @@ public class MyWebViewClient extends WebViewClient {
 
             //连接超时
             case WebViewClient.ERROR_TIMEOUT:
+                view.loadUrl("file:///android_asset/html/error_handle.html");
                 break;
 
             default:
+                view.loadUrl("file:///android_asset/html/error_handle.html");
                 break;
         }
     }

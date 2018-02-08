@@ -2,9 +2,11 @@ package com.whu.webviewtest;
 
 import android.app.ProgressDialog;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -14,7 +16,9 @@ public class WebviewActivity extends AppCompatActivity {
     //传入的资源url
 //    private String resourceUrl = "file:///android_asset/test.html";
 //    private String resourceUrl = "http://192.168.1.116:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
-    private String resourceUrl = "http://192.168.1.116:9111/test.html";
+    private String resourceUrl = "http://www.geonoon.com:9111/render/exhibition_detail?type=0&id=31&url=http://www.toyota.com.cn/mobile/vehicles/";
+//    private String resourceUrl = "http://192.168.1.116:9111/test.html";
+//    private String resourceUrl = "http://www.geonoon.com/mobile";
 
     //WebView
     private FrameLayout mWebViewContainer;
@@ -24,6 +28,7 @@ public class WebviewActivity extends AppCompatActivity {
     //加载进度
     private ProgressDialog progressDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class WebviewActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initView() {
         progressDialog = new ProgressDialog(WebviewActivity.this);
 //        progressDialog.setIndeterminate(false);
@@ -93,6 +99,7 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     //初始化WebView设置
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initWebViewSettings() {
         mWebSettings = mWebView.getSettings();
 
@@ -133,6 +140,11 @@ public class WebviewActivity extends AppCompatActivity {
 
         //当加载html页面时，WebView会在/data/data包名目录下生成database和cache两个文件夹
         //请求的URL记录保存在WebViewCache.db，而URL的内容保存在WebViewCache文件夹下
+
+        //允许Cookie和第三方Cookie认证
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setAcceptThirdPartyCookies(mWebView, true);
     }
 
     //系统回退按钮监听
