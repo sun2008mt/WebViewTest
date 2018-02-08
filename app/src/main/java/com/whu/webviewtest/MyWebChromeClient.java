@@ -27,7 +27,7 @@ public class MyWebChromeClient extends WebChromeClient {
 
 //    private ProgressDialog progressDialog;
 
-    MyWebChromeClient(Context context, ViewGroup container) {
+    public MyWebChromeClient(Context context, ViewGroup container) {
         this.context = context;
         this.container = container;
 //        this.progressDialog = progressDialog;
