@@ -21,7 +21,6 @@ public class WebviewActivity extends AppCompatActivity {
     //WebView
     private FrameLayout mWebViewContainer;
     private WebView mWebView;
-    private WebSettings mWebSettings;
 
 //    加载进度
 //    private ProgressDialog progressDialog;
