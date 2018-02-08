@@ -19,16 +19,16 @@ import android.webkit.WebViewClient;
 
 public class MyWebViewClient extends WebViewClient {
 
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
-    MyWebViewClient(ProgressDialog progressDialog) {
-        this.progressDialog = progressDialog;
-    }
+//    MyWebViewClient(ProgressDialog progressDialog) {
+//        this.progressDialog = progressDialog;
+//    }
 
     //            打开网页不调用系统浏览器，在定义的WebView中显示
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        progressDialog.show();
+//        progressDialog.show();
 
         return super.shouldOverrideUrlLoading(view, url);
 
@@ -40,7 +40,7 @@ public class MyWebViewClient extends WebViewClient {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        progressDialog.show();
+//        progressDialog.show();
 
         ViewGroup container = (ViewGroup) view.getParent();
         int childCount = container.getChildCount();
@@ -68,7 +68,7 @@ public class MyWebViewClient extends WebViewClient {
     //设置结束加载函数
     @Override
     public void onPageFinished(WebView view, String url) {
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
 
         Log.e("WebView", "结束加载...");
     }

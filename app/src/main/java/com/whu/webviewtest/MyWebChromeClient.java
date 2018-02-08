@@ -25,12 +25,12 @@ public class MyWebChromeClient extends WebChromeClient {
 
     private ViewGroup container;
 
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
-    MyWebChromeClient(Context context, ViewGroup container, ProgressDialog progressDialog) {
+    MyWebChromeClient(Context context, ViewGroup container) {
         this.context = context;
         this.container = container;
-        this.progressDialog = progressDialog;
+//        this.progressDialog = progressDialog;
     }
 
     //获取网站标题
@@ -44,11 +44,10 @@ public class MyWebChromeClient extends WebChromeClient {
     public void onProgressChanged(WebView view, int newProgress) {
         String progress = newProgress + "%";
 //                progressDialog.setProgress(newProgress);
-        progressDialog.setMessage("已加载" + progress + "，请稍后...");
+//        progressDialog.setMessage("已加载" + progress + "，请稍后...");
         Log.e("WebView", progress);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
         Log.e("WebView", "新窗口被创建...\n是否为对话框：" + isDialog + "\n是否是用户触发：" + isUserGesture);
@@ -57,14 +56,9 @@ public class MyWebChromeClient extends WebChromeClient {
 
         WebView childView = new WebView(context);
 
-        //允许Cookie和第三方Cookie认证
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptCookie(true);
-        cookieManager.setAcceptThirdPartyCookies(childView, true);
-
         initWebViewSettings(childView);
         childView.setWebChromeClient(this);
-        childView.setWebViewClient(new MyWebViewClient(progressDialog));
+        childView.setWebViewClient(new MyWebViewClient());
         childView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         container.addView(childView);
         WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
@@ -136,32 +130,32 @@ public class MyWebChromeClient extends WebChromeClient {
 //            }
 
     //初始化WebView设置
-    private void initWebViewSettings(WebView webView) {
-        WebSettings webSettings = webView.getSettings();
+    public static void initWebViewSettings(WebView mWebView) {
+        WebSettings mWebSettings = mWebView.getSettings();
 
         //如果访问的页面中要与JS交互，则WebView必须设置支持JS
         // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
         // 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
-        webSettings.setSupportMultipleWindows(true);         //支持多窗口
+        mWebSettings.setJavaScriptEnabled(true);
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
+        mWebSettings.setSupportMultipleWindows(true);         //支持多窗口
 
-        webSettings.setAllowFileAccess(true); //设置可以访问文件
-        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+        mWebSettings.setAllowFileAccess(true); //设置可以访问文件
+        mWebSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
 
-        webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
-//        webSettings.setBlockNetworkImage(true);        //设置是否不加载网络图片
-        webSettings.setPluginState(WebSettings.PluginState.ON);               //是否启用插件(默认false，deprecated)
+        mWebSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
+//        mWebSettings.setBlockNetworkImage(true);        //设置是否不加载网络图片
+        mWebSettings.setPluginState(WebSettings.PluginState.ON);               //是否启用插件(默认false，deprecated)
 
         //设置自适应屏幕
-        webSettings.setUseWideViewPort(true);          //将图片调整到适合WebView的大小
-        webSettings.setLoadWithOverviewMode(true);     //缩放至屏幕大小
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebSettings.setUseWideViewPort(true);          //将图片调整到适合WebView的大小
+        mWebSettings.setLoadWithOverviewMode(true);     //缩放至屏幕大小
+        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
         //设置缩放操作
-        webSettings.setSupportZoom(true);      //支持缩放，默认为true.是下面的前提
-        webSettings.setBuiltInZoomControls(true);     //设置内置的缩放控件.若为false，则该WebView不可缩放
-        webSettings.setDisplayZoomControls(false);     //是否显示原生的缩放控件
+        mWebSettings.setSupportZoom(true);      //支持缩放，默认为true.是下面的前提
+        mWebSettings.setBuiltInZoomControls(true);     //设置内置的缩放控件.若为false，则该WebView不可缩放
+        mWebSettings.setDisplayZoomControls(false);     //是否显示原生的缩放控件
 
         //优先使用缓存:
         //缓存模式如下：
@@ -169,12 +163,19 @@ public class MyWebChromeClient extends WebChromeClient {
         //LOAD_DEFAULT: （默认）根据cache-control决定是否从网络上取数据。
         //LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.
         //LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setDomStorageEnabled(true); // 开启 DOM storage API 功能
-        webSettings.setDatabaseEnabled(true);   //开启 database storage API 功能
-//        webSettings.setAppCacheEnabled(true);//开启 Application Caches 功能
+        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebSettings.setDomStorageEnabled(true); // 开启 DOM storage API 功能
+        mWebSettings.setDatabaseEnabled(true);   //开启 database storage API 功能
+//        mWebSettings.setAppCacheEnabled(true);//开启 Application Caches 功能
 
         //当加载html页面时，WebView会在/data/data包名目录下生成database和cache两个文件夹
         //请求的URL记录保存在WebViewCache.db，而URL的内容保存在WebViewCache文件夹下
+
+        //允许Cookie和第三方Cookie认证
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.setAcceptThirdPartyCookies(mWebView, true);
+        }
     }
 }
