@@ -171,6 +171,8 @@ public class MyWebChromeClient extends WebChromeClient {
         //当加载html页面时，WebView会在/data/data包名目录下生成database和cache两个文件夹
         //请求的URL记录保存在WebViewCache.db，而URL的内容保存在WebViewCache文件夹下
 
+        mWebSettings.setGeolocationEnabled(true);      //允许进行地理定位，默认为true
+
         //允许Cookie和第三方Cookie认证
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
