@@ -87,12 +87,15 @@ public class MyWebChromeClient extends WebChromeClient {
         Log.e("WebView", "容器中的WebView数量为： " + childCount);
         Log.e("*************", "*************");
 
-        //如果WebView数量大于1，则关闭子WebView时移除控件
-        if (window != null && childCount > 1) {
-            container.removeView(window);
+//        //如果WebView数量大于1，则关闭子WebView时移除控件
+//        if (window != null && childCount > 1) {
+
+        //将WebView从视图中移除
+        container.removeView(window);
 //            container.removeViewAt(childCount - 1);
-            window.destroy();
-        }
+        //完全销毁WebView对象
+        window.destroy();
+//        }
 
         Log.e("WebView", "窗口被关闭...");
         Log.e("WebView", "关闭后容器中的WebView数量为： " + container.getChildCount());
